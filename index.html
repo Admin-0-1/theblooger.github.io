@@ -51,7 +51,8 @@
             //output.innerHTML = response.json();
 
         }).then(function(data){
-           // output.innerHTML = "<pre>" + data;
+           output.innerHTML = "<pre>" + data;
+            return;
           // display_data(data);
             // Replace the entire page content, including <head> and <body>
             document.documentElement.innerHTML = data;
