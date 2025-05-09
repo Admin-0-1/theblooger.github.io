@@ -37,7 +37,7 @@
         output.innerHTML = "Loading...";
     
 
-        const url = 'http://localhost/blooger/api/posts/2529/html';
+        const url = 'http://localhost/blooger/api/posts/{id}/html';
         
         fetch(url, {
                   method: 'POST',
@@ -135,7 +135,10 @@
     }
      // Automatically call get_data2 when the page loads
      window.onload = function() {
-        get_data2(id);
+        const urlParams = new URLSearchParams(window.location.search);
+         console.log(window.location);
+        const postId = urlParams.get('id');
+        get_data2(postId);
     };
 </script>
     <meta charset="UTF-8">
