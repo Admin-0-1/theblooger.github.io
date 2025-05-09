@@ -32,12 +32,12 @@
         }
         get_data2(id);
     }
-    function get_data2(id){
+    function get_data2(postId){
         var output = document.querySelector(".output");
         output.innerHTML = "Loading...";
     
 
-        const url = 'http://localhost/blooger/api/posts/{id}/html';
+        const url = 'http://localhost/blooger/api/posts/{postId}/html';
         
         fetch(url, {
                   method: 'POST',
