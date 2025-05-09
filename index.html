@@ -39,14 +39,7 @@
 
         const url = 'http://localhost/blooger/api/posts/2529/html';
         
-        fetch(url, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      
-                  },
-                  body: JSON.stringify({ title: 'New Post', content: 'Post content here' })
-                }).then(function(response){
+        fetch(url).then(function(response){
             return response.text();
             //output.innerHTML = response.json();
 
