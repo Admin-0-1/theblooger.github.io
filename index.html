@@ -1,198 +1,24 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<script>
-    function get_data(){
-        const ajax = new XMLHttpRequest();
-        
-        const url = 'http://localhost/api/api/save.php?name=john&age=76'
-        var output = document.querySelector(".output");
-        output.innerHTML = "Loading...";
-    
-        ajax.addEventListener('readystatechange', function(e){
-            if(ajax.readyState == 4){
-                if(ajax.status == 200){
-                    output.innerHTML = ajax.responseText;
-                }
-            }
-        });
-        ajax.open('get', url, true);
-        ajax.send();
-        
-    }
-    var id = 1
-    function next(){
-        id += 1;
-        get_data2(id);
-    }
-    function prev(){
-        id -= 1;
-        if(id < 0){
-            id = 1;
-        }
-        get_data2(id);
-    }
-    function get_data2(postId){
-      if(postId == "undefined"){
-        const urlParams = new URLSearchParams(window.location.search);
-        postId = urlParams.get('id');
-        
-      }
-      //alert(postId);
-        var output = document.querySelector(".output");
-        output.innerHTML = "Loading...";
-    
-        
-        const params = window.location.search;
-        console.log(params.split('?')[1]);
-        const url = `http://localhost/blooger/api/posts/${postId}/html`;
-        
-        fetch(url, {
-                  method: 'GET',
-                  headers: {
-                     'Content-Type': 'application/json',
-                    'Authorization': JSON.stringify({
-                        'serverKey': '432cfe7d85b5f74904e6de3e113b992acc8a32e320354de2374c0e5f9246580f',
-                        'urlParams' : params.split('?')[1],
-                    })
-                  },
-                  //body : JSON.stringify({'urlParams' : params})
-        }).then(function(response){
-          //alert(urlParams);
-            return response.text();
-            //output.innerHTML = response.json();
-
-        }).then(function(data){
-            //alert(data);
-            //output.innerHTML =  data;
-            //console.log(data);
-          // display_data(data);
-            // Replace the entire page content, including <head> and <body>
-            document.documentElement.innerHTML = data;
-            // Execute any <script> tags in the returned HTML
-            const scripts = document.documentElement.querySelectorAll("script");
-            scripts.forEach((script) => {
-                const newScript = document.createElement("script");
-                if (script.src) {
-                    // If the script has a src attribute, load it
-                    newScript.src = script.src;
-                } else {
-                    // Otherwise, copy the inline script content
-                    newScript.textContent = script.textContent;
-                }
-                document.body.appendChild(newScript); // Append the script to the body
-            });
-
-        }).catch(function(error){
-            output.innerHTML = error;
-
-        });
-        function display_data(data){
-           
-            //var obj = JSON.parse(data);
-           // data = ;
-            
-            var output = document.querySelector(".output");
-            output.innerHTML = "";
-            if(data !== "{}"){
-            for(let i = 0; i < data.length; i++){
-                output.innerHTML += 
-                `
-                        <div  class="" data-aos = "fade-top" data-aos-delay="300" id = "post_form2" style="border:solid thin #aaa; padding:5px; background-color:white;  margin-top: 20px; box-shadow: 0px 0px 10px #aaa;">
-                            
-                            
-                            <div   style="border:solid thin #aaa; padding:1px; background-color:white; justify-content:center;"  >
-
-                            <div  style ="margin:1px;padding:25px;" id = "form story2">
-                                <div id ='input_field' style='font-weight:normal;'><label>Postid</label><br>
-                                        <p>`+data[i].postid+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>userid</label><br>
-                                        <p>`+data[i].userid+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>Type</label><br>
-                                        <p>`+data[i].blogtype+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>date</label><br>
-                                        <p>`+data[i].date+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>Title</label><br>
-                                        <p>`+data[i].title+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>post</label><br>
-                                        <p>
-                                            `+data[i].post+`
-                                        </p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>likes</label><br>
-                                        <p>`+data[i].likes+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>comments</label><br>
-                                        <p>`+data[i].comments+`</p>
-                                </div><br>
-                                <div id ='input_field' style='font-weight:normal;'><label>image</label><br>
-                                        <p>`+data[i].image+`</p>
-                                </div><br>
-
-                            </div>
-                            </div>
-                    </div>
-                    <br>
-                    <hr data-aos = "fade-right" data-aos-delay="200">
-                `;
-            }
-            //output.innerHTML = data.postid;
-        }
-
-          
-        }
-    }
-     // Automatically call get_data2 when the page loads
-     window.onload = function() {
-       const urlParams = new URLSearchParams(window.location.search);
-       const postId = urlParams.get('id');
-       if (postId) {
-          get_data2(postId);
-        }
-    };
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Api</title>
-    <style>
-        .comment{
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0px 0px 10px #aaa;
-            padding: 1rem;
-            margin: 1rem;
-            font-family: tahoma;
-            font-size: 16px;
-
-        }
-        .comment div{
-            float: right;
-            color: grey;
-            font-size: 30px;
-        }
-        body{
-            background-color:aqua;
-        }
-    </style>
-</head>
-<body>
-  <button onclick="get_data2()" type="button">fetch data</button>
-  <div style = "width:100%; max-width:600px; margin:auto;">
-    <div class="output">
-       
-    </div>
-  </div>
-  <button onclick="Prev()" type="button">Prev</button>
-  <button onclick="next()" type="button">Next</button>
-    
-
-</body>
-
-
-
+    <head>
+        <!--Root server initialization-->
+        <script>
+            window.apiConfig = {
+                apiKey: "432cfe7d85b5f74904e6de3e113b992acc8a32e320354de2374c0e5f9246580f"
+            };
+        </script>
+        <script src="http://localhost/blooger/js/api.js"></script>
+        <!--Freind server details-->
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="http://localhost/blooger/assets/logo/logobc.gif" type="image/svg+xml">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blooger | Friend</title>
+    </head>
+    <body style = "background-color:aqua;">
+        Output
+        <div style = "width:100%; max-width:600px; margin:auto;">
+            <!--Outputs from the server-->
+            <div class="output"></div>
+        </div>
+    </body>
 </html>
