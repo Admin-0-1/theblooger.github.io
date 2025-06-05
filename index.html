@@ -21,7 +21,12 @@
                 const params = window.location.search;
                 console.log(params.split('?')[1]);
                 const url = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
-                
+                try {
+                let response = await fetch(url);
+                    console.log('CORS Test:', response.ok);
+                } catch (err) {
+                    console.error('CORS Blocking:', err);
+                }
                 fetch(url, {
                             method: 'GET',
                             headers: {
