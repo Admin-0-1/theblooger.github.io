@@ -20,7 +20,7 @@
                 
                 const params = window.location.search;
                 console.log(params.split('?')[1]);
-                const url = `https://theblooger.lovestoblog.com/assets/api/posts/${postId}/html`;
+                const url = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
                 
                 fetch(url, {
                             method: 'GET',
