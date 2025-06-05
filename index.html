@@ -8,7 +8,7 @@
             };
         </script>
         <script >
-            function get_data2(postId){
+           async function get_data2(postId){
                 if(postId == "undefined"){
                 const urlParams = new URLSearchParams(window.location.search);
                 postId = urlParams.get('id');
