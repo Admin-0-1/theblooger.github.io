@@ -33,6 +33,8 @@
                             },
                             //body : JSON.stringify({'urlParams' : params})
                 }).then(function(response){
+                    console.log('Status:', response.status);
+                    console.log('Headers:', [...response.headers.entries()]);
                     //alert(urlParams);
                     //output.innerHTML = response.json();
                     typeReturned = response.headers.get('content-type');
