@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!--Root server initialization-->
+        <!--Root server initialization-https://theblooger.lovestoblog.com/js/api.js->
         <script>
             window.apiConfig = {
                 apiKey: "432cfe7d85b5f74904e6de3e113b992acc8a32e320354de2374c0e5f9246580f"
             };
         </script>
-        <script src="https://theblooger.lovestoblog.com/js/api.js"></script>
+        <script>
+            async function get_data2(postId){
+                if(postId == "undefined"){
+                const urlParams = new URLSearchParams(window.location.search);
+                postId = urlParams.get('id');
+                
+                }
+                //alert(API_KEY);
+            
+                //alert(postId);
+                var output = document.querySelector(".output");
+                output.innerHTML = "Loading...";
+            
+                
+                const params = window.location.search;
+                console.log(params.split('?')[1]);
+                const url1 = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
+                
+            
+                ///////////////////
+                const url = 'https://http-cors-proxy.p.rapidapi.com/';
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'x-rapidapi-key': 'dd09f54c7emsh68efb9d36677610p1f7b8djsnfc30572de592',
+                        'x-rapidapi-host': 'http-cors-proxy.p.rapidapi.com',
+                        'Content-Type': 'application/json',
+                        Origin: 'www.example.com',
+                        'X-Requested-With': 'www.example.com'
+                    },
+                    body: {
+                        url: url1
+                    }
+                };
+            
+                try {
+                    const response = await fetch(url, options);
+                    const result = await response.text();
+                    console.log(result);
+                } catch (error) {
+                    console.error(error);
+                }
+                ///////////////////
+            
+            }
+                // Automatically call get_data2 when the page loads
+            window.onload = function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const postId = urlParams.get('id');
+                 
+                API_KEY = window.apiConfig.apiKey;
+                if (!API_KEY) {
+                    alert("API_KEY is not defined in window.apiConfig click the link to read the documentation ");
+                    var data = {};
+                    data.status = "error";
+                    data.message = "Unauthorized server. If you are a visitor, <a href='https://theblooger.lovestoblog.com/one_blog.php?id="+postId+"'> click here </a> to read this blog on the Blooger Servers <br> if you are a the server owner here is the exact error generated: API_KEY is not defined in window.apiConfig click the link to read the documentation on <a href='https://theblooger.lovestoblog.com/api_docs.php'>Blooger API</a>";
+                    console.log(data);
+                    console.error("API_KEY is not defined in window.apiConfig");
+                    var output = document.querySelector(".output");
+                    output.innerHTML =  data.message;
+                    return;
+                }
+                if (postId) {
+                    get_data2(postId);
+                }
+            };
+        </script>
         <!--Freind server details-->
         <meta charset="UTF-8">
         <link rel="shortcut icon" href="https://theblooger.lovestoblog.com/assets/logo/logobc.gif" type="image/svg+xml">
