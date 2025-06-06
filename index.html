@@ -8,71 +8,86 @@
             };
         </script>
         <script>
-            async function get_data2(postId){
-                if(postId == "undefined"){
-                const urlParams = new URLSearchParams(window.location.search);
-                postId = urlParams.get('id');
-                
+            async function get_data2(postId) {
+                if (postId === "undefined") {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    postId = urlParams.get('id');
                 }
-                //alert(API_KEY);
             
-                //alert(postId);
                 var output = document.querySelector(".output");
                 output.innerHTML = "Loading...";
-            
                 
                 const params = window.location.search;
                 console.log(params.split('?')[1]);
-                const url1 = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
-                
             
-                ///////////////////
-                const url = 'https://http-cors-proxy.p.rapidapi.com/';
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'x-rapidapi-key': 'dd09f54c7emsh68efb9d36677610p1f7b8djsnfc30572de592',
-                        'x-rapidapi-host': 'http-cors-proxy.p.rapidapi.com',
-                        'Content-Type': 'application/json',
-                        Origin: 'www.example.com',
-                        'X-Requested-With': 'www.example.com'
-                    },
-                    body: {
-                        url: url1
-                    }
-                };
+                // Using CORS proxy
+                const cors_proxy = "https://cors-anywhere.herokuapp.com/";
+                const url = `${cors_proxy}https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
             
                 try {
-                    const response = await fetch(url, options);
-                    const result = await response.text();
-                    console.log(result);
-                } catch (error) {
-                    console.error(error);
+                    let response = await fetch(url);
+                    console.log('CORS Test:', response.ok);
+                } catch (err) {
+                    console.error('CORS Blocking:', err);
                 }
-                ///////////////////
             
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': JSON.stringify({
+                            'serverKey': API_KEY,
+                            'urlParams': params.split('?')[1],
+                        })
+                    }
+                })
+                .then(async function(response) {
+                    console.log('Status:', response.status);
+                    console.log('Headers:', [...response.headers.entries()]);
+                    
+                    let typeReturned = response.headers.get('content-type');
+                    let data;
+                    if (typeReturned === "application/json") {
+                        data = await response.json();
+                    } else {
+                        data = await response.text();
+                    }
+            
+                    return data;
+                })
+                .then(function(data) {
+                    document.documentElement.innerHTML = data;
+            
+                    const scripts = document.documentElement.querySelectorAll("script");
+                    scripts.forEach((script) => {
+                        const newScript = document.createElement("script");
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
+                })
+                .catch(function(error) {
+                    output.innerHTML = error;
+                });
             }
-                // Automatically call get_data2 when the page loads
+            
             window.onload = function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('id');
                  
                 API_KEY = window.apiConfig.apiKey;
                 if (!API_KEY) {
-                    alert("API_KEY is not defined in window.apiConfig click the link to read the documentation ");
-                    var data = {};
-                    data.status = "error";
-                    data.message = "Unauthorized server. If you are a visitor, <a href='https://theblooger.lovestoblog.com/one_blog.php?id="+postId+"'> click here </a> to read this blog on the Blooger Servers <br> if you are a the server owner here is the exact error generated: API_KEY is not defined in window.apiConfig click the link to read the documentation on <a href='https://theblooger.lovestoblog.com/api_docs.php'>Blooger API</a>";
-                    console.log(data);
-                    console.error("API_KEY is not defined in window.apiConfig");
-                    var output = document.querySelector(".output");
-                    output.innerHTML =  data.message;
+                    alert("API_KEY is not defined. Refer to the documentation.");
                     return;
                 }
                 if (postId) {
                     get_data2(postId);
                 }
             };
+
         </script>
         <!--Freind server details-->
         <meta charset="UTF-8">
