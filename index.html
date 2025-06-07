@@ -37,7 +37,7 @@
         output.innerHTML = "Loading...";
     
 
-        const url = `http://localhost/blooger/api/posts/${postId}/html`;
+        const url = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
         
         fetch(url, {
                   method: 'POST',
@@ -162,7 +162,7 @@
     </style>
 </head>
 <body>
-  <button onclick="get_data2()" type="button">fetch data</button>
+  <button onclick="get_data2('3857889')" type="button">fetch data</button>
   <div style = "width:100%; max-width:600px; margin:auto;">
     <div class="output">
        
