@@ -27,10 +27,6 @@
                             credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json',
-                            'Authorization': JSON.stringify({
-                                'serverKey': API_KEY,
-                                'urlParams' : params.split('?')[1],
-                            })
                             },
                             //body : JSON.stringify({'urlParams' : params})
                 }).then(function(response){
