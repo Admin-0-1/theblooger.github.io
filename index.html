@@ -21,7 +21,8 @@
                 const params = window.location.search;
                 console.log(params.split('?')[1]);
                 //const url = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
-                 const targetUrl = 'https://theblooger.lovestoblog.com/api/posts/${postId}/html';
+                 const targetUrl = `https://theblooger.lovestoblog.com/api/posts/${postId}/html`;
+;
                  const proxyUrl = 'https://theblooger.lovestoblog.com/assets/proxy.php?url=' + encodeURIComponent(targetUrl);
                 fetch(proxyUrl, {
                             method: 'GET',
