@@ -25,13 +25,7 @@
 ;
                  const proxyUrl = 'https://theblooger.lovestoblog.com/assets/proxy.php?url=' + encodeURIComponent(targetUrl);
                 fetch(proxyUrl, {
-                            method: 'GET',
-                          headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': JSON.stringify({
-                                    'serverKey': API_KEY, // Assuming API_KEY is defined earlier
-                                })
-                            },
+                            method: 'GET'
                             //body : JSON.stringify({'urlParams' : params})
                 }).then(function(response){
                     console.log('Status:', response.status);
